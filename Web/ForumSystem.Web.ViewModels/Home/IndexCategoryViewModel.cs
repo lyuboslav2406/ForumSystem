@@ -1,8 +1,8 @@
-﻿using ForumSystem.Data.Models;
-using ForumSystem.Services.Mapping;
-
-namespace ForumSystem.Web.ViewModels.Home
+﻿namespace ForumSystem.Web.ViewModels.Home
 {
+    using ForumSystem.Data.Models;
+    using ForumSystem.Services.Mapping;
+
     public class IndexCategoryViewModel : IMapFrom<Category>
     {
         public string Title { get; set; }
@@ -15,6 +15,6 @@ namespace ForumSystem.Web.ViewModels.Home
 
         public int PostsCount { get; set; }
 
-        public string Url => $"/category/{this.Name.Replace('-', '-')}";
+        public string Url => $"/category/{this.Name.Replace(' ', '-')}";
     }
 }
