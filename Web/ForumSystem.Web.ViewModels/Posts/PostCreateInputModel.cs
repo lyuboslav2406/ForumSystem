@@ -15,5 +15,7 @@ namespace ForumSystem.Web.ViewModels.Posts
 
         [Required]
         public int CategoryId { get; set; }
+
+        public IEnumerable<CategoryDropDownViewModel> Categories { get; set; }
     }
 }

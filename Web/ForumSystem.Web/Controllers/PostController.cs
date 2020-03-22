@@ -16,13 +16,16 @@
     public class PostController : Controller
     {
         private readonly Services.Data.IPostsService postService;
+        private readonly ICategoriesService categoryService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public PostController(
             IPostsService postService,
+            ICategoriesService categoryService,
             UserManager<ApplicationUser> userManager)
         {
             this.postService = postService;
+            this.categoryService = categoryService;
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
@@ -34,7 +37,10 @@
         [Authorize]
         public IActionResult Create()
         {
-            return this.View();
+            var categories = this.categoryService.GetAll<CategoryDropDownViewModel>();
+            var viewModel = new PostCreateInputModel();
+            viewModel.Categories = categories;
+            return this.View(viewModel);
         }
 
         [HttpPost]
