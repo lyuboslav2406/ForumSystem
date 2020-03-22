@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ForumSystem.Data.Migrations
 {
-    public partial class InitialAddModels : Migration
+    public partial class InitialModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
