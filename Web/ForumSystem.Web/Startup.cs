@@ -49,8 +49,13 @@
 
             services.AddControllersWithViews(options =>
             {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); // CSRF
             });
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-CSRF-TOKEN";
+            });
+
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
@@ -64,7 +69,8 @@
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender("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"));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
-            services.AddTransient<IPostsService, PostService>();
+            services.AddTransient<IPostsService, PostsService>();
+            services.AddTransient<IVotesService, VotesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
