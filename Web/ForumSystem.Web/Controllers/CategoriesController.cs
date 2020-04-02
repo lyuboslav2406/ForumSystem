@@ -32,6 +32,11 @@
 
             viewModel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
 
+            if (viewModel.PagesCount == 0)
+            {
+                viewModel.PagesCount = 1;
+            }
+
             viewModel.CurrentPage = page;
 
             return this.View(viewModel);
