@@ -27,6 +27,14 @@
             this.userManager = userManager;
         }
 
+        public IActionResult All()
+        {
+            var viewmodel = new PostAllModel();
+            var posts = this.postsService.GetAll<PostViewModel>();
+            viewmodel.Posts = posts;
+            return this.View(viewmodel);
+        }
+
         public IActionResult ById(int id)
         {
             var postViewModel = this.postsService.GetById<PostViewModel>(id);

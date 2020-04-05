@@ -5,7 +5,9 @@ using Ganss.XSS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ForumSystem.Web.ViewModels.Posts
 {
@@ -26,6 +28,21 @@ namespace ForumSystem.Web.ViewModels.Posts
         public int VotesCount { get; set; }
 
         public IEnumerable<PostCommentViewModel> Comments { get; set; }
+
+        public string ShortContent
+        {
+            get
+            {
+                var content = WebUtility.HtmlDecode(Regex.Replace(this.Content, @"<[^>]+>", string.Empty));
+                return content.Length > 300
+                        ? content.Substring(0, 300) + "..."
+                        : content;
+            }
+        }
+
+        public int CommentsCount { get; set; }
+
+        public string Url => $"/Posts/ById/{this.Id}";
 
         public void CreateMappings(IProfileExpression configuration)
         {

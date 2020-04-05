@@ -1,12 +1,14 @@
-﻿using ForumSystem.Data.Common.Repositories;
-using ForumSystem.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ForumSystem.Services.Data
+﻿namespace ForumSystem.Services.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using ForumSystem.Data.Common.Repositories;
+    using ForumSystem.Data.Models;
+
     public class CommentsService : ICommentsService
     {
         private readonly IDeletableEntityRepository<Comment> commentsRepository;
@@ -29,6 +31,17 @@ namespace ForumSystem.Services.Data
             await this.commentsRepository.AddAsync(newComment);
 
             await this.commentsRepository.SaveChangesAsync();
+        }
+
+        public bool IsInPostId(int commentId, int postId)
+        {
+            var commentPostId = this.commentsRepository
+                .All()
+                .Where(x => x.Id == commentId)
+                .Select(x => x.PostId)
+                .FirstOrDefault();
+
+            return commentPostId == postId;
         }
     }
 }
