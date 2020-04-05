@@ -5,15 +5,16 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">@this.ViewData["Title"]!</h1>
-    <cache expires-after="TimeSpan.FromDays(10)"vary-by-query="id">
-
-        <h1>@DateTime.UtcNow</h1>
+    <cache expires-after="TimeSpan.FromDays(10)" vary-by-query="id">
+        <img src="~/ezgif.com-gif-maker.gif" width="1000" class="mr-3" alt="ForumSlider">
+        <hr />
+        <h1>@DateTime.Now</h1>
+        <br />
     </cache>
     <a asp-controller="Posts" asp-action="Create" class=" btn-lg btn-primary"> Create new forum post</a>
 </div>
-<br />
-<div class="row">
+<hr />
+<div class="row" style="text-align:center">
     @foreach (var category in Model.Categories)
     {
         <div class="col-md-4">
