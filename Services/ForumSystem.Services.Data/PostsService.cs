@@ -32,9 +32,19 @@
             return post.Id;
         }
 
-        public IEnumerable<T> GetAll<T>()
+        public IEnumerable<T> GetAll<T>(string search = null, int? count = null)
         {
             IQueryable<Post> allPosts = this.postsRepository.All().OrderByDescending(x => x.CreatedOn);
+
+            if (count.HasValue)
+            {
+                allPosts = allPosts.Take(count.Value);
+            }
+
+            if (search != null)
+            {
+                allPosts = allPosts.Where(a => a.Title.Contains(search));
+            }
 
             return allPosts.To<T>();
         }

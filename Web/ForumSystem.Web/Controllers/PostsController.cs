@@ -27,11 +27,12 @@
             this.userManager = userManager;
         }
 
-        public IActionResult All()
+        public IActionResult All(string search = null)
         {
             var viewmodel = new PostAllModel();
-            var posts = this.postsService.GetAll<PostViewModel>();
+            var posts = this.postsService.GetAll<PostViewModel>(search);
             viewmodel.Posts = posts;
+            viewmodel.Search = search;
             return this.View(viewmodel);
         }
 

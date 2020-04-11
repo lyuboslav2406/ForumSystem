@@ -5,6 +5,13 @@
 
 <h1>Posts</h1>
 
+<form>
+    <p>
+        Product by name: <input type="text" asp-for="Search" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+<hr />
 @foreach (var post in Model.Posts)
 {
     <div class="media-body">
