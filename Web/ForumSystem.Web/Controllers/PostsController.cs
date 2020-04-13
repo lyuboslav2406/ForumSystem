@@ -1,5 +1,7 @@
 ﻿namespace ForumSystem.Web.Controllers
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using AutoMapper;
     using ForumSystem.Data.Models;
@@ -16,6 +18,7 @@
         private readonly ICategoriesService categoriesService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IMapper mapper;
+        private const int ItemsPerPage = 5;
 
         public PostsController(
             IPostsService postsService,
@@ -27,12 +30,21 @@
             this.userManager = userManager;
         }
 
-        public IActionResult All(string search = null)
+        public IActionResult All(int page = 1, string search = null)
         {
             var viewmodel = new PostAllModel();
-            var posts = this.postsService.GetAll<PostViewModel>(search);
-            viewmodel.Posts = posts;
+            viewmodel.Posts = this.postsService.GetAll<PostViewModel>(search, ItemsPerPage, (page - 1) * ItemsPerPage);
+            var count = this.postsService.GetCount();
             viewmodel.Search = search;
+            viewmodel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+
+            if (viewmodel.PagesCount == 0)
+            {
+                viewmodel.PagesCount = 1;
+            }
+
+            viewmodel.CurrentPage = page;
+
             return this.View(viewmodel);
         }
 

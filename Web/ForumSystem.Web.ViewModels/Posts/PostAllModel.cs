@@ -12,5 +12,10 @@ namespace ForumSystem.Web.ViewModels.Posts
 
         public string Search { get; set; }
 
+        public string Title { get; set; }
+
+        public int CurrentPage { get; set; }
+
+        public int PagesCount { get; set; }
     }
 }

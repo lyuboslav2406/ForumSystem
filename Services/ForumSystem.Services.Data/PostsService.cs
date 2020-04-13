@@ -32,13 +32,16 @@
             return post.Id;
         }
 
-        public IEnumerable<T> GetAll<T>(string search = null, int? count = null)
+        public IEnumerable<T> GetAll<T>(string search = null, int? take = null, int skip = 0)
         {
-            IQueryable<Post> allPosts = this.postsRepository.All().OrderByDescending(x => x.CreatedOn);
+            var allPosts = this.postsRepository
+                .All()
+                .OrderByDescending(x => x.CreatedOn)
+                .Skip(skip);
 
-            if (count.HasValue)
+            if (take.HasValue)
             {
-                allPosts = allPosts.Take(count.Value);
+                allPosts = allPosts.Take(take.Value);
             }
 
             if (search != null)
@@ -70,6 +73,12 @@
             var post = this.postsRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
             return post;
+        }
+
+        public int GetCount()
+        {
+            var allPostCount = this.postsRepository.All().Count();
+            return allPostCount;
         }
 
         public int GetCountByCategoryId(int categoryId)

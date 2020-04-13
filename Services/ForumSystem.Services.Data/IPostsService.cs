@@ -13,6 +13,8 @@
 
         int GetCountByCategoryId(int categoryId);
 
-        IEnumerable<T> GetAll<T>(string search = null, int? count = null);
+        IEnumerable<T> GetAll<T>(string search = null, int? take = null, int skip = 0);
+
+        int GetCount();
     }
 }
