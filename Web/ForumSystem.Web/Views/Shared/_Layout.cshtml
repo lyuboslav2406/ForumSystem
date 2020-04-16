@@ -29,6 +29,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
+
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -39,8 +40,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Create">Create Post</a>
                         </li>
-                    </ul>
-                </div>
+                        <li>
+                            <form>
+                                <p>
+                                    <input type="text" name="Search" />
+                                    <input type="submit" value="Search" asp-area="" asp-controller="Posts" asp-action="All" />
+                                </p>
+                            </form>
+                        </li>
+                    </ul>                    
+                </div>               
             </div>
         </nav>
     </header>
@@ -50,6 +59,12 @@
         <main role="main" class="pb-3">
             @this.RenderBody()
         </main>
+
+        <div class="text-dark">
+            <aside class="col-md-3 magazine-page">
+                <vc:sidebar></vc:sidebar>
+            </aside>
+        </div>   
     </div>
 
     <footer class="border-top footer text-muted">

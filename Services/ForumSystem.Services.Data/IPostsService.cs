@@ -15,6 +15,8 @@
 
         IEnumerable<T> GetAll<T>(string search = null, int? take = null, int skip = 0);
 
+        IEnumerable<T> GetAllPosts<T>();
+
         int GetCount();
     }
 }

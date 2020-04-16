@@ -52,6 +52,15 @@
             return allPosts.To<T>();
         }
 
+        public IEnumerable<T> GetAllPosts<T>()
+        {
+            var posts = this.postsRepository
+                 .All()
+                 .OrderByDescending(x => x.CreatedOn);
+
+            return posts.To<T>();
+        }
+
         public IEnumerable<T> GetByCategoryId<T>(int categoryId, int? take = null, int skip = 0)
         {
             var query = this.postsRepository
