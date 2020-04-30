@@ -32,6 +32,13 @@
             return post.Id;
         }
 
+        public async Task<int> Edit(Post post)
+        {
+            this.postsRepository.Update(post);
+            await this.postsRepository.SaveChangesAsync();
+            return post.Id;
+        }
+
         public IEnumerable<T> GetAll<T>(string search = null, int? take = null, int skip = 0)
         {
             var allPosts = this.postsRepository

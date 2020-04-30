@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ForumSystem.Web.ViewModels.Posts
 {
-    public class PostCreateInputModel : IMapTo<Post>
+    public class PostCreateInputModel : IMapTo<Post>, IMapFrom<Post>
     {
         [Required]
         public string Title { get; set; }

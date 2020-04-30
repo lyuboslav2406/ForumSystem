@@ -1,11 +1,14 @@
 ﻿namespace ForumSystem.Services.Data
 {
+    using ForumSystem.Data.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface IPostsService
     {
         Task<int> CreateAsync(string title, string content, int categoryId, string userId);
+
+        Task<int> Edit(Post post);
 
         T GetById<T>(int id);
 

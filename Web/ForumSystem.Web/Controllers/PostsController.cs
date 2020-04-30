@@ -70,6 +70,23 @@
             return this.View(viewModel);
         }
 
+        public IActionResult Edit(int id)
+        {
+            var postViewModel = this.postsService.GetById<PostEditModel>(id);
+            if (postViewModel == null)
+            {
+                return this.NotFound();
+            }
+
+            var categories = this.categoriesService.GetAll<CategoryDropDownViewModel>();
+            postViewModel.Categories = categories;
+            var date = this.postsService.GetById<PostEditModel>(id).CreatedOn;
+
+            postViewModel.CreatedOn = date;
+
+            return this.View(postViewModel);
+        }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(PostCreateInputModel input)
@@ -83,6 +100,26 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
             var postId = await this.postsService.CreateAsync(input.Title, input.Content, input.CategoryId, user.Id);
+            return this.RedirectToAction(nameof(this.ById), new { id = postId });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(PostEditModel input)
+        {
+            var post = AutoMapperConfig.MapperInstance.Map<Post>(input);
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            var currentPost = this.postsService.GetById<PostEditModel>(input.Id);
+
+            var user = await this.userManager.GetUserAsync(this.User);
+            post.UserId = user.Id;
+            post.CreatedOn = currentPost.CreatedOn;
+            var postId = await this.postsService.Edit(post);
             return this.RedirectToAction(nameof(this.ById), new { id = postId });
         }
     }
