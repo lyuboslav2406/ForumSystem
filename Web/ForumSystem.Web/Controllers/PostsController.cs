@@ -70,17 +70,27 @@
             return this.View(viewModel);
         }
 
-        public IActionResult Edit(int id)
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
         {
             var postViewModel = this.postsService.GetById<PostEditModel>(id);
+
             if (postViewModel == null)
             {
                 return this.NotFound();
             }
 
+            //var currentUser = await this.userManager.GetUserIdAsync(user);
+            //var postCreator = this.postsService.GetUserNameByPostId(id);
+
+            //if (currentUser != postCreator)
+            //{
+            //    return this.BadRequest();
+            //}
+
             var categories = this.categoriesService.GetAll<CategoryDropDownViewModel>();
             postViewModel.Categories = categories;
-            var date = this.postsService.GetById<PostEditModel>(id).CreatedOn;
+            var date = postViewModel.CreatedOn;
 
             postViewModel.CreatedOn = date;
 
@@ -121,6 +131,31 @@
             post.CreatedOn = currentPost.CreatedOn;
             var postId = await this.postsService.Edit(post);
             return this.RedirectToAction(nameof(this.ById), new { id = postId });
+        }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var post = this.postsService.GetById<PostViewModel>(id);
+            var postToDelete = AutoMapperConfig.MapperInstance.Map<PostViewModel>(post);
+            return this.View(postToDelete);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Delete(PostViewModel input)
+        {
+            var post = AutoMapperConfig.MapperInstance.Map<Post>(input);
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            await this.postsService.Delete(post);
+
+            return this.RedirectToAction("All");
         }
     }
 }

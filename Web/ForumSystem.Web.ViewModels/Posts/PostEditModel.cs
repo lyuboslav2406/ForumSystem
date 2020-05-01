@@ -24,5 +24,7 @@
         public DateTime CreatedOn { get; set; }
 
         public IEnumerable<CategoryDropDownViewModel> Categories { get; set; }
+
+        public string UserUserName { get; set; }
     }
 }

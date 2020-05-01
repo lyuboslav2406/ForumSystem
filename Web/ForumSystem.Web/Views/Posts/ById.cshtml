@@ -1,4 +1,6 @@
 ﻿@model ForumSystem.Web.ViewModels.Posts.PostViewModel
+    <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Model.Id" class=" btn-lg btn-primary"> Edit post</a>
+<hr />
 @{
     this.ViewData["Title"] = Model.Title;
     void DisplayComments(int? parentId)

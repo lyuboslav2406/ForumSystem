@@ -32,6 +32,13 @@
             return post.Id;
         }
 
+        public async Task Delete(Post post)
+        {
+
+            this.postsRepository.HardDelete(post);
+            await this.postsRepository.SaveChangesAsync();
+        }
+
         public async Task<int> Edit(Post post)
         {
             this.postsRepository.Update(post);
@@ -101,6 +108,13 @@
         {
             var categoryCount = this.postsRepository.All().Count(x => x.CategoryId == categoryId);
             return categoryCount;
+        }
+
+        public string GetUserNameByPostId(int id)
+        {
+            var postUserName = this.postsRepository.All().Where(p => p.Id == id).FirstOrDefault().User.UserName;
+
+            return postUserName;
         }
     }
 }

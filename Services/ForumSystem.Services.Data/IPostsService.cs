@@ -10,6 +10,8 @@
 
         Task<int> Edit(Post post);
 
+        Task Delete(Post post);
+
         T GetById<T>(int id);
 
         IEnumerable<T> GetByCategoryId<T>(int categoryId, int? take = null, int skip = 0);
@@ -21,5 +23,7 @@
         IEnumerable<T> GetAllPosts<T>();
 
         int GetCount();
+
+        string GetUserNameByPostId(int id);
     }
 }
