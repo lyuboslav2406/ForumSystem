@@ -1,5 +1,9 @@
 ﻿@model ForumSystem.Web.ViewModels.Posts.PostViewModel
+@if (this.User.Identity.Name == Model.UserUserName)
+{
     <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Model.Id" class=" btn-lg btn-primary"> Edit post</a>
+    <a asp-controller="Posts" asp-action="Delete" asp-route-id="@Model.Id" class=" btn-lg btn-danger"> Delete post</a>
+}
 <hr />
 @{
     this.ViewData["Title"] = Model.Title;

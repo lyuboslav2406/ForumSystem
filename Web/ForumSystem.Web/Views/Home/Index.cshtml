@@ -3,17 +3,12 @@
 @{
     this.ViewData["Title"] = $"{@GlobalConstants.SystemName}";
 }
-
+<a asp-area="" asp-controller="Posts" asp-action="All"><img style="width:100%;" src="~/unnamed.jpg" width="1000" class="mr-3" alt="ForumSlider"></a>
 <div class="text-center">
-    <cache expires-after="TimeSpan.FromDays(10)" vary-by-query="id">
-        <img src="~/ezgif.com-gif-maker.gif" width="1000" class="mr-3" alt="ForumSlider">
-        <hr />
-        <h1>@DateTime.Now</h1>
-        <br />
-    </cache>
-    <a asp-controller="Posts" asp-action="Create" class=" btn-lg btn-primary"> Create new forum post</a>
+    <hr />
+    <a asp-controller="Posts" asp-action="Create" class=" btn-lg btn-primary"> CREATE NEW FORUM POST</a>
+    <hr />
 </div>
-<hr />
 <div class="row" style="text-align:center">
     @foreach (var category in Model.Categories)
     {

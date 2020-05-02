@@ -46,7 +46,7 @@
             return post.Id;
         }
 
-        public IEnumerable<T> GetAll<T>(string search = null, int? take = null, int skip = 0)
+        public IEnumerable<T> GetAll<T>(string search = null, int? take = null, int skip = 0, string userName = null)
         {
             var allPosts = this.postsRepository
                 .All()
@@ -61,6 +61,11 @@
             if (search != null)
             {
                 allPosts = allPosts.Where(a => a.Title.Contains(search));
+            }
+
+            if (userName != null)
+            {
+                allPosts = allPosts.Where(a => a.User.UserName == userName);
             }
 
             return allPosts.To<T>();
@@ -98,9 +103,15 @@
             return post;
         }
 
-        public int GetCount()
+        public int GetCount(string userName = null)
         {
             var allPostCount = this.postsRepository.All().Count();
+
+            if (userName != null)
+            {
+                allPostCount = this.postsRepository.All().Where(u => u.User.UserName == userName).Count();
+            }
+
             return allPostCount;
         }
 

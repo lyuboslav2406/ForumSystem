@@ -48,6 +48,27 @@
             return this.View(viewmodel);
         }
 
+        [Authorize]
+        public IActionResult ByUser(int id, int page = 1, string search = null)
+        {
+            var user = this.HttpContext.User.Identity.Name;
+
+            var viewmodel = new PostAllModel();
+            viewmodel.Posts = this.postsService.GetAll<PostViewModel>(search, ItemsPerPage, (page - 1) * ItemsPerPage, user);
+            var count = this.postsService.GetCount(user);
+            viewmodel.Search = search;
+            viewmodel.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+
+            if (viewmodel.PagesCount == 0)
+            {
+                viewmodel.PagesCount = 1;
+            }
+
+            viewmodel.CurrentPage = page;
+
+            return this.View(viewmodel);
+        }
+
         public IActionResult ById(int id)
         {
             var postViewModel = this.postsService.GetById<PostViewModel>(id);
@@ -70,33 +91,6 @@
             return this.View(viewModel);
         }
 
-        [Authorize]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var postViewModel = this.postsService.GetById<PostEditModel>(id);
-
-            if (postViewModel == null)
-            {
-                return this.NotFound();
-            }
-
-            //var currentUser = await this.userManager.GetUserIdAsync(user);
-            //var postCreator = this.postsService.GetUserNameByPostId(id);
-
-            //if (currentUser != postCreator)
-            //{
-            //    return this.BadRequest();
-            //}
-
-            var categories = this.categoriesService.GetAll<CategoryDropDownViewModel>();
-            postViewModel.Categories = categories;
-            var date = postViewModel.CreatedOn;
-
-            postViewModel.CreatedOn = date;
-
-            return this.View(postViewModel);
-        }
-
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Create(PostCreateInputModel input)
@@ -111,6 +105,33 @@
             var user = await this.userManager.GetUserAsync(this.User);
             var postId = await this.postsService.CreateAsync(input.Title, input.Content, input.CategoryId, user.Id);
             return this.RedirectToAction(nameof(this.ById), new { id = postId });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var postViewModel = this.postsService.GetById<PostEditModel>(id);
+
+            if (postViewModel == null)
+            {
+                return this.NotFound();
+            }
+
+            var categories = this.categoriesService.GetAll<CategoryDropDownViewModel>();
+            postViewModel.Categories = categories;
+            var date = postViewModel.CreatedOn;
+
+            postViewModel.CreatedOn = date;
+
+            var postUserName = postViewModel.UserUserName;
+            var currentUser = this.HttpContext.User.Identity.Name;
+
+            if (postUserName != currentUser)
+            {
+                return this.BadRequest("Failed to edit the post");
+            }
+
+            return this.View(postViewModel);
         }
 
         [HttpPost]
@@ -138,6 +159,14 @@
         public IActionResult Delete(int id)
         {
             var post = this.postsService.GetById<PostViewModel>(id);
+            var postUserName = post.UserUserName;
+            var currentUser = this.HttpContext.User.Identity.Name;
+
+            if (postUserName != currentUser)
+            {
+                return this.BadRequest("Failed to delete the post");
+            }
+
             var postToDelete = AutoMapperConfig.MapperInstance.Map<PostViewModel>(post);
             return this.View(postToDelete);
         }

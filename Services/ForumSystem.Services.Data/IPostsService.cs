@@ -18,11 +18,11 @@
 
         int GetCountByCategoryId(int categoryId);
 
-        IEnumerable<T> GetAll<T>(string search = null, int? take = null, int skip = 0);
+        IEnumerable<T> GetAll<T>(string search = null, int? take = null, int skip = 0, string userName = null);
 
         IEnumerable<T> GetAllPosts<T>();
 
-        int GetCount();
+        int GetCount(string userName = null);
 
         string GetUserNameByPostId(int id);
     }

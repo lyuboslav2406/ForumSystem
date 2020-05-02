@@ -5,10 +5,12 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete post</h1>
+<h1>Delete</h1>
 
 <div>
-    <h4>Delete</h4>
+    <h4>
+        Аre you sure you want to delete the article?
+    </h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -20,9 +22,8 @@
     </dl>
 
     <form asp-action="Delete">
-        @*<input type="hidden" asp-for="Client.EIK" />*@
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back</a>
+        <a asp-action="All">Back</a>
     </form>
 </div>
 
