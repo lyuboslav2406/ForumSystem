@@ -1,10 +1,12 @@
 ﻿namespace ForumSystem.Web.Controllers
 {
+    using System;
+
     using ForumSystem.Services.Data;
     using ForumSystem.Web.ViewModels.Categories;
+    using ForumSystem.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using System;
 
     public class CategoriesController : Controller
     {
@@ -38,6 +40,15 @@
             }
 
             viewModel.CurrentPage = page;
+
+            return this.View(viewModel);
+        }
+
+        public IActionResult All()
+        {
+            var viewModel = new IndexViewModel();
+            var categories = this.categoriesService.GetAll<IndexCategoryViewModel>();
+            viewModel.Categories = categories;
 
             return this.View(viewModel);
         }

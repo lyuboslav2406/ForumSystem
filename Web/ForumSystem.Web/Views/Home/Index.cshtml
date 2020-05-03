@@ -3,7 +3,14 @@
 @{
     this.ViewData["Title"] = $"{@GlobalConstants.SystemName}";
 }
-<a asp-area="" asp-controller="Posts" asp-action="All"><img style="width:100%;" src="~/unnamed.jpg" width="1000" class="mr-3" alt="ForumSlider"></a>
+<div class="w3-content w3-display-container">
+    <a asp-area="" asp-controller="Posts" asp-action="All"><img class="mySlides" src="https://cdncloudcart.com/4692/files/image/slaider-1903x7163-5e820f84cad53.jpg" style="width:100%"></a>
+    <img class="mySlides" src="https://cdncloudcart.com/4692/files/image/slaider-1903x7167-5e820f721d6a7.jpg" style="width:100%">
+    <img class="mySlides" src="https://cdncloudcart.com/4692/files/image/slaider-1903x7162-5e820f62e03ab.jpg" style="width:100%">
+
+    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+    <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+</div>
 <div class="text-center">
     <hr />
     <a asp-controller="Posts" asp-action="Create" class=" btn-lg btn-primary"> CREATE NEW FORUM POST</a>
@@ -21,3 +28,23 @@
         </div>
     }
 </div>
+
+<script>
+    var slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+        showDivs(slideIndex += n);
+    }
+
+    function showDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        if (n > x.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = x.length }
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        x[slideIndex - 1].style.display = "block";
+    }
+</script>

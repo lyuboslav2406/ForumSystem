@@ -47,12 +47,15 @@
                                 </li>
                             </ul>
                         <li>
-                            <form>
-                                <p>
-                                    <input type="text" name="Search" />
-                                    <input type="submit" value="Search" asp-area="" asp-controller="Posts" asp-action="All" />
-                                </p>
-                            </form>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Categories" asp-action="All">Categories</a>
+                        </li>
+                        <form>
+                            <p>
+                                <input type="text" name="Search" />
+                                <input type="submit" value="Search" asp-area="" asp-controller="Posts" asp-action="All" />
+                            </p>
+                        </form>
                         </li>
                     </ul>
                 </div>
