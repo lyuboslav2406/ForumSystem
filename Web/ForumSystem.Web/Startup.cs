@@ -67,7 +67,6 @@
 
             // Application services
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender("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"));
-            services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<IVotesService, VotesService>();

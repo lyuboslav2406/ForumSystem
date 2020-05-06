@@ -1,9 +1,5 @@
 ﻿namespace ForumSystem.Web.ViewModels.Posts
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     using ForumSystem.Data.Models;
     using ForumSystem.Services.Mapping;
 

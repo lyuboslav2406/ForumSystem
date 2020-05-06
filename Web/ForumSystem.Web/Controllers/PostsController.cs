@@ -17,7 +17,7 @@
         private readonly IPostsService postsService;
         private readonly ICategoriesService categoriesService;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly IMapper mapper;
+
         private const int ItemsPerPage = 5;
 
         public PostsController(

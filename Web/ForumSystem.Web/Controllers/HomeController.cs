@@ -13,7 +13,7 @@
 
     public class HomeController : BaseController
     {
-        private ICategoriesService categoriesService;
+        private readonly ICategoriesService categoriesService;
 
         public HomeController(ICategoriesService categoriesService)
         {

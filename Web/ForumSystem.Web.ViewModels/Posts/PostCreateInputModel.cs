@@ -1,12 +1,11 @@
-﻿using ForumSystem.Data.Models;
-using ForumSystem.Services.Mapping;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-
-namespace ForumSystem.Web.ViewModels.Posts
+﻿namespace ForumSystem.Web.ViewModels.Posts
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    using ForumSystem.Data.Models;
+    using ForumSystem.Services.Mapping;
+
     public class PostCreateInputModel : IMapTo<Post>, IMapFrom<Post>
     {
         [Required]

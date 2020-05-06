@@ -3,14 +3,34 @@
 @{
     this.ViewData["Title"] = $"{@GlobalConstants.SystemName}";
 }
-<div class="w3-content w3-display-container">
-    <a asp-area="" asp-controller="Posts" asp-action="All"><img class="mySlides" src="https://cdncloudcart.com/4692/files/image/slaider-1903x7163-5e820f84cad53.jpg" style="width:100%"></a>
-    <img class="mySlides" src="https://cdncloudcart.com/4692/files/image/slaider-1903x7167-5e820f721d6a7.jpg" style="width:100%">
-    <img class="mySlides" src="https://cdncloudcart.com/4692/files/image/slaider-1903x7162-5e820f62e03ab.jpg" style="width:100%">
 
-    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
-    <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+@*<div class="slideshow-container" width="100%">*@
+
+<div class="mySlides">
+    <img src="https://cdncloudcart.com/4692/files/image/slaider-1903x7163-5e820f84cad53.jpg" style="width:100%">
 </div>
+
+<div class="mySlides">
+    <img src="https://cdncloudcart.com/4692/files/image/slaider-1903x7167-5e820f721d6a7.jpg" style="width:100%">
+</div>
+
+<div class="mySlides">
+    @*<div class="numbertext">3 / 3</div>*@
+    <img src="https://cdncloudcart.com/4692/files/image/slaider-1903x7162-5e820f62e03ab.jpg" style="width:100%">
+    @*<div class="text">Caption Three</div>*@
+</div>
+
+@*</div>*@
+<br>
+<div style="text-align:center">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+</div>
+
+</div>
+
+
 <div class="text-center">
     <hr />
     <a asp-controller="Posts" asp-action="Create" class=" btn-lg btn-primary"> CREATE NEW FORUM POST</a>
@@ -30,21 +50,23 @@
 </div>
 
 <script>
-    var slideIndex = 1;
-    showDivs(slideIndex);
+    var slideIndex = 0;
+    showSlides();
 
-    function plusDivs(n) {
-        showDivs(slideIndex += n);
-    }
-
-    function showDivs(n) {
+    function showSlides() {
         var i;
-        var x = document.getElementsByClassName("mySlides");
-        if (n > x.length) { slideIndex = 1 }
-        if (n < 1) { slideIndex = x.length }
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
         }
-        x[slideIndex - 1].style.display = "block";
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        setTimeout(showSlides, 5000); // Change image every 5 seconds
     }
 </script>
