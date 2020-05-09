@@ -1,20 +1,25 @@
 ﻿namespace ForumSystem.Services.Data
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
     using ForumSystem.Data.Common.Repositories;
     using ForumSystem.Data.Models;
     using ForumSystem.Services.Mapping;
+    using Microsoft.AspNetCore.Http;
 
     public class PostsService : IPostsService
     {
         private readonly IDeletableEntityRepository<Post> postsRepository;
+        private readonly IDeletableEntityRepository<Image> imagesRepository;
 
-        public PostsService(IDeletableEntityRepository<Post> postsRepository)
+        public PostsService(IDeletableEntityRepository<Post> postsRepository, IDeletableEntityRepository<Image> imagesRepository)
         {
             this.postsRepository = postsRepository;
+            this.imagesRepository = imagesRepository;
         }
 
         public async Task<int> CreateAsync(string title, string content, int categoryId, string userId)
@@ -117,6 +122,56 @@
             var postUserName = this.postsRepository.All().Where(p => p.Id == id).FirstOrDefault().User.UserName;
 
             return postUserName;
+        }
+
+        public async Task<IEnumerable<string>> UploadAsync(Cloudinary cloudinary, ICollection<IFormFile> files)
+        {
+            List<string> imagesUrl = new List<string>();
+
+            foreach (var file in files)
+            {
+                byte[] destinationImage;
+
+                using (var image = new MemoryStream())
+                {
+                    await file.CopyToAsync(image);
+
+                    destinationImage = image.ToArray();
+                }
+
+                using (var destinationStrem = new MemoryStream(destinationImage))
+                {
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(file.FileName, destinationStrem),
+                    };
+
+                    var result = await cloudinary.UploadAsync(uploadParams);
+
+                    var imgUrl = result.Uri.AbsoluteUri;
+
+                    imagesUrl.Add(imgUrl);
+                }
+            }
+
+            return imagesUrl;
+        }
+
+        public async Task<int> AddImageInBase(IEnumerable<string> images, int postId)
+        {
+            foreach (var image in images)
+            {
+                var imageUrl = new Image
+                {
+                    Url = image,
+                    PostId = postId,
+                };
+                await this.imagesRepository.AddAsync(imageUrl);
+                await this.imagesRepository.SaveChangesAsync();
+
+            }
+
+            return postId;
         }
     }
 }

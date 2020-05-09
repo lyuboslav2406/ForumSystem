@@ -1,14 +1,16 @@
 ﻿namespace ForumSystem.Web.Controllers
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using AutoMapper;
+
+    using CloudinaryDotNet;
     using ForumSystem.Data.Models;
     using ForumSystem.Services.Data;
     using ForumSystem.Services.Mapping;
     using ForumSystem.Web.ViewModels.Posts;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
@@ -17,17 +19,19 @@
         private readonly IPostsService postsService;
         private readonly ICategoriesService categoriesService;
         private readonly UserManager<ApplicationUser> userManager;
-
+        private readonly Cloudinary cloudinary;
         private const int ItemsPerPage = 5;
 
         public PostsController(
             IPostsService postsService,
             ICategoriesService categoriesService,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            Cloudinary cloudinary)
         {
             this.postsService = postsService;
             this.categoriesService = categoriesService;
             this.userManager = userManager;
+            this.cloudinary = cloudinary;
         }
 
         public IActionResult All(int page = 1, string search = null)
@@ -103,7 +107,17 @@
             }
 
             var user = await this.userManager.GetUserAsync(this.User);
+
+            var files = input.Files;
+
+            var urlOfProducts = await this.postsService.UploadAsync(this.cloudinary, files);
+
+            var kakvoimatuk = urlOfProducts;
+
             var postId = await this.postsService.CreateAsync(input.Title, input.Content, input.CategoryId, user.Id);
+
+            await this.postsService.AddImageInBase(urlOfProducts, postId);
+
             return this.RedirectToAction(nameof(this.ById), new { id = postId });
         }
 
@@ -185,6 +199,14 @@
             await this.postsService.Delete(post);
 
             return this.RedirectToAction("All");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(ICollection<IFormFile> files)
+        {
+            var urlOfProducts = await this.postsService.UploadAsync(this.cloudinary, files);
+
+            return this.Redirect("All");
         }
     }
 }

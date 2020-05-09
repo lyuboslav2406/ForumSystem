@@ -2,6 +2,7 @@
 {
     using System.Reflection;
 
+    using CloudinaryDotNet;
     using ForumSystem.Data;
     using ForumSystem.Data.Common;
     using ForumSystem.Data.Common.Repositories;
@@ -59,6 +60,15 @@
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
+
+            // Cloudinary
+            Account account = new Account(
+                    this.configuration["Cloudinary:CloudName"],
+                    this.configuration["Cloudinary:APIKey"],
+                    this.configuration["Cloudinary:APISecret"]);
+
+            Cloudinary cloudinary = new Cloudinary(account);
+            services.AddSingleton(cloudinary);
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));

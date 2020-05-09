@@ -1,9 +1,12 @@
-﻿using ForumSystem.Data.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace ForumSystem.Services.Data
+﻿namespace ForumSystem.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using CloudinaryDotNet;
+    using ForumSystem.Data.Models;
+    using Microsoft.AspNetCore.Http;
+
     public interface IPostsService
     {
         Task<int> CreateAsync(string title, string content, int categoryId, string userId);
@@ -23,5 +26,9 @@ namespace ForumSystem.Services.Data
         int GetCount(string userName = null);
 
         string GetUserNameByPostId(int id);
+
+        Task<IEnumerable<string>> UploadAsync(Cloudinary cloudinary, ICollection<IFormFile> files);
+
+        Task<int> AddImageInBase(IEnumerable<string> images, int postId);
     }
 }

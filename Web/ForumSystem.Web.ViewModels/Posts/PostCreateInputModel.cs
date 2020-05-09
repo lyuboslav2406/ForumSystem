@@ -5,6 +5,7 @@
 
     using ForumSystem.Data.Models;
     using ForumSystem.Services.Mapping;
+    using Microsoft.AspNetCore.Http;
 
     public class PostCreateInputModel : IMapTo<Post>, IMapFrom<Post>
     {
@@ -18,5 +19,7 @@
         public int CategoryId { get; set; }
 
         public IEnumerable<CategoryDropDownViewModel> Categories { get; set; }
+
+        public ICollection<IFormFile> Files { get; set; }
     }
 }

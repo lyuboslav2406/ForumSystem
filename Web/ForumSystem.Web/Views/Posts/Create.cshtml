@@ -15,7 +15,11 @@
     });
 </script>
 
-<form method="post" asp-action="Create">
+<form method="post" enctype="multipart/form-data" asp-controller="Posts" asp-action="Create">
+    <label for="img">Select image:</label>
+    <input asp-for="Files" type="file" class="form-control" multiple />
+
+
     <div>
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" />
@@ -30,9 +34,10 @@
     <hr />
     <div>
         <label asp-for="CategoryId">Category</label>
-        <select asp-for="CategoryId" asp-items="categories" class="form-control"></select> 
+        <select asp-for="CategoryId" asp-items="categories" class="form-control"></select>
         <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
     <hr />
-    <input type="submit" class="btn btn-primary" />
+
+    <input type="submit" value="Upload">
 </form>

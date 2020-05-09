@@ -4,7 +4,12 @@
     this.ViewData["Title"] = $"{@GlobalConstants.SystemName}";
 }
 
-@*<div class="slideshow-container" width="100%">*@
+@*<div class="slideshow-container" width="100%">*@  
+    <form method="post" enctype="multipart/form-data" asp-controller="Posts" asp-action="Upload">
+        <label for="img">Select image:</label>
+        <input type="file" name="files" multiple>
+        <input type="submit" value="Upload">
+    </form>
 
 <div class="mySlides">
     <img src="https://cdncloudcart.com/4692/files/image/slaider-1903x7163-5e820f84cad53.jpg" style="width:100%">
