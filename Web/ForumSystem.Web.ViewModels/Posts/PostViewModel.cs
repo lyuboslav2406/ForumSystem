@@ -29,6 +29,8 @@ namespace ForumSystem.Web.ViewModels.Posts
 
         public IEnumerable<PostCommentViewModel> Comments { get; set; }
 
+        public ICollection<Image> Images { get; set; }
+
         public string ShortContent
         {
             get

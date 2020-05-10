@@ -168,7 +168,6 @@
                 };
                 await this.imagesRepository.AddAsync(imageUrl);
                 await this.imagesRepository.SaveChangesAsync();
-
             }
 
             return postId;

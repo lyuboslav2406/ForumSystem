@@ -1,4 +1,61 @@
-﻿@model ForumSystem.Web.ViewModels.Posts.PostViewModel
+﻿<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial;
+        }
+
+        /* The grid: Four equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 25%;
+            padding: 10px;
+        }
+
+            /* Style the images inside the grid */
+            .column img {
+                opacity: 0.8;
+                cursor: pointer;
+            }
+
+                .column img:hover {
+                    opacity: 1;
+                }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Expanding image text */
+        #imgtext {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            color: white;
+            font-size: 20px;
+        }
+
+        /* Closable button inside the expanded image */
+        .closebtn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+@model ForumSystem.Web.ViewModels.Posts.PostViewModel
 @if (this.User.Identity.Name == Model.UserUserName)
 {
     <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Model.Id" class=" btn-lg btn-primary"> Edit post</a>
@@ -60,6 +117,24 @@
 }
 
 <h1>@Model.Title</h1>
+
+<!-- The four columns -->
+<div class="row">
+    @foreach (var image in Model.Images)
+    {
+        <div class="column">
+            <img src="@image.Url" alt="Nature" style="width:100%" onclick="myFunction(this);">
+        </div>
+    }
+</div>
+
+<div class="container">
+    <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+    <img id="expandedImg" style="width:100%">
+    <div id="imgtext"></div>
+</div>
+
+
 <div class="container-fluid mt-100">
     <div class="row">
         <div class="col-md-12">
@@ -151,6 +226,16 @@
                     $("#votesCount").html(data.votesCount);
                 }
             });
+        }
+    </script>
+
+    <script>
+        function myFunction(imgs) {
+            var expandImg = document.getElementById("expandedImg");
+            var imgText = document.getElementById("imgtext");
+            expandImg.src = imgs.src;
+            imgText.innerHTML = imgs.alt;
+            expandImg.parentElement.style.display = "block";
         }
     </script>
 }
