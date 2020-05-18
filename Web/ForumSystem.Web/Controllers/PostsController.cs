@@ -172,7 +172,8 @@
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var post = this.postsService.GetById<PostViewModel>(id);
+            var post = this.postsService.GetById<PostDeleteModel>(id);
+
             var postUserName = post.UserUserName;
             var currentUser = this.HttpContext.User.Identity.Name;
 
@@ -181,13 +182,13 @@
                 return this.BadRequest("Failed to delete the post");
             }
 
-            var postToDelete = AutoMapperConfig.MapperInstance.Map<PostViewModel>(post);
+            var postToDelete = AutoMapperConfig.MapperInstance.Map<PostDeleteModel>(post);
             return this.View(postToDelete);
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Delete(PostViewModel input)
+        public async Task<IActionResult> Delete(PostDeleteModel input)
         {
             var post = AutoMapperConfig.MapperInstance.Map<Post>(input);
 

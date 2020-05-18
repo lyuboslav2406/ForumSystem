@@ -14,9 +14,9 @@
     public class PostsService : IPostsService
     {
         private readonly IDeletableEntityRepository<Post> postsRepository;
-        private readonly IDeletableEntityRepository<Image> imagesRepository;
+        private readonly IRepository<Image> imagesRepository;
 
-        public PostsService(IDeletableEntityRepository<Post> postsRepository, IDeletableEntityRepository<Image> imagesRepository)
+        public PostsService(IDeletableEntityRepository<Post> postsRepository, IRepository<Image> imagesRepository)
         {
             this.postsRepository = postsRepository;
             this.imagesRepository = imagesRepository;
@@ -39,6 +39,13 @@
 
         public async Task Delete(Post post)
         {
+            var imagesToDelete = this.imagesRepository.All().Where(i => i.PostId == post.Id);
+
+            foreach (var image in imagesToDelete)
+            {
+                this.imagesRepository.Delete(image);
+                this.imagesRepository.SaveChangesAsync();
+            }
 
             this.postsRepository.HardDelete(post);
             await this.postsRepository.SaveChangesAsync();

@@ -6,7 +6,7 @@
 
     using ForumSystem.Data.Common.Models;
 
-    public class Image : BaseDeletableModel<int>
+    public class Image : BaseModel<int>
     {
         public string Url { get; set; }
 
