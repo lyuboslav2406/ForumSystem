@@ -24,6 +24,11 @@
 
         public async Task<int> CreateAsync(string title, string content, int categoryId, string userId)
         {
+            if (content == null)
+            {
+                content = "This post is empty!";
+            }
+
             var post = new Post
             {
                 CategoryId = categoryId,
@@ -155,9 +160,12 @@
 
                     var result = await cloudinary.UploadAsync(uploadParams);
 
-                    var imgUrl = result.Uri.AbsoluteUri;
+                    if (result.Error == null)
+                    {
+                        var imgUrl = result.Uri.AbsoluteUri;
 
-                    imagesUrl.Add(imgUrl);
+                        imagesUrl.Add(imgUrl);
+                    }
                 }
             }
 

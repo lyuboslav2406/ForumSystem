@@ -81,6 +81,11 @@
                 return this.NotFound();
             }
 
+            if (postViewModel.VotesCount < 0)
+            {
+                postViewModel.VotesCount = 0;
+            }
+
             return this.View(postViewModel);
         }
 
@@ -99,7 +104,7 @@
         [Authorize]
         public async Task<IActionResult> Create(PostCreateInputModel input)
         {
-            var post = AutoMapperConfig.MapperInstance.Map<Post>(input);
+            var post = AutoMapperConfig.MapperInstance.Map<PostCreateInputModel>(input);
 
             if (!this.ModelState.IsValid)
             {
@@ -110,19 +115,20 @@
 
             var files = input.Files;
 
-            var urlOfProducts = await this.postsService.UploadAsync(this.cloudinary, files);
-
-            var kakvoimatuk = urlOfProducts;
-
             var postId = await this.postsService.CreateAsync(input.Title, input.Content, input.CategoryId, user.Id);
 
-            await this.postsService.AddImageInBase(urlOfProducts, postId);
+            if (files != null)
+            {
+                var urlOfProducts = await this.postsService.UploadAsync(this.cloudinary, files);
+                await this.postsService.AddImageInBase(urlOfProducts, postId);
+
+            }
 
             return this.RedirectToAction(nameof(this.ById), new { id = postId });
         }
 
         [Authorize]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
             var postViewModel = this.postsService.GetById<PostEditModel>(id);
 

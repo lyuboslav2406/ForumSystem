@@ -3169,7 +3169,7 @@ input[type="button"].btn-block {
 }
 
 .fade:not(.show) {
-  opacity: 0;
+  opacity: 100;
 }
 
 .collapse:not(.show) {
